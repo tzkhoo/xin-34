@@ -12,10 +12,10 @@
     --foreground: 0 0% 98%; /* Pure white text */
 
     /* Glass/Card Colors */
-    --card: 220 15% 13% / 0.95; /* More opaque dark */
+    --card: 220 15% 13% / 0.4; /* Semi-transparent dark */
     --card-foreground: 0 0% 98%;
-    --glass: 220 15% 15% / 0.9; /* More opaque glass overlay */
-    --glass-border: 0 0% 100% / 0.3; /* Slightly more visible border */
+    --glass: 0 0% 100% / 0.08; /* Glass overlay */
+    --glass-border: 0 0% 100% / 0.2; /* Glass border */
 
     /* Popover Colors */
     --popover: 220 15% 10%;
@@ -31,7 +31,7 @@
     --secondary-foreground: 0 0% 98%;
 
     /* Muted Colors */
-    --muted: 220 15% 18% / 0.9;
+    --muted: 0 0% 100% / 0.1;
     --muted-foreground: 0 0% 70%;
 
     /* Accent Purple */
@@ -62,8 +62,8 @@
     --destructive-foreground: 0 0% 98%;
 
     /* Borders and Inputs */
-    --border: 0 0% 100% / 0.25;
-    --input: 220 15% 18% / 0.9;
+    --border: 0 0% 100% / 0.15;
+    --input: 0 0% 100% / 0.1;
     --ring: 343 75% 43%;
 
     --radius: 1rem;
@@ -98,7 +98,7 @@
     /* Dark mode uses the same values as our nebula theme */
     --background: 220 15% 13%;
     --foreground: 0 0% 98%;
-    --card: 220 15% 13% / 0.95;
+    --card: 220 15% 13% / 0.4;
     --card-foreground: 0 0% 98%;
     --popover: 220 15% 10%;
     --popover-foreground: 0 0% 98%;
@@ -106,14 +106,14 @@
     --primary-foreground: 0 0% 98%;
     --secondary: 180 50% 30%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 220 15% 18% / 0.9;
+    --muted: 0 0% 100% / 0.1;
     --muted-foreground: 0 0% 70%;
     --accent: 315 60% 60%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 100% / 0.25;
-    --input: 220 15% 18% / 0.9;
+    --border: 0 0% 100% / 0.15;
+    --input: 0 0% 100% / 0.1;
     --ring: 343 75% 43%;
   }
 }
@@ -145,12 +145,12 @@
 
 @layer components {
   .glass-panel {
-    @apply backdrop-blur-sm bg-glass border border-glass-border rounded-2xl;
+    @apply backdrop-blur-xl bg-glass border border-glass-border rounded-2xl;
     box-shadow: var(--shadow-glass);
   }
   
   .glass-button {
-    @apply backdrop-blur-sm bg-glass border border-glass-border rounded-xl;
+    @apply backdrop-blur-md bg-glass border border-glass-border rounded-xl;
     transition: var(--transition-smooth);
   }
   

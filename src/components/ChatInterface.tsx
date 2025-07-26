@@ -49,7 +49,7 @@ export const ChatInterface = () => {
   const [advancedMessages, setAdvancedMessages] = useState<Message[]>([
     {
       id: 'welcome-advanced',
-      content: 'Advanced AI mode activated! I can provide deeper analysis and insights.',
+      content: 'Advanced AI Agent activated! Click Question Suggestions to start asking.',
       isUser: false,
       timestamp: new Date()
     }
@@ -124,9 +124,50 @@ export const ChatInterface = () => {
     'Tesla (TSLA)'
   ];
 
+  // Question suggestions for advanced mode
+  const questionSuggestions = [
+    "What's been the main driver behind my 12.5% year‑to‑date return?",
+    "Am I too concentrated in tech?",
+    "How much income could I generate if I shifted 20% of my equity holdings into dividend‑paying stocks?",
+    "How does my Sharpe Ratio of 1.24 compare to top‑performing portfolios?",
+    "What would happen to my portfolio if we had a 2008‑style market crash?",
+    "What does it mean that I'm 78% to my retirement target?",
+    "Should I consider tax‑loss harvesting this quarter?",
+    "What would a rebalance look like today?",
+    "Is my cash working hard enough in this rate environment?",
+    "What's my international exposure and is it sufficient?",
+    "What's my diversification score of 85 % telling me?",
+    "What does a portfolio beta of 1.05 imply?",
+    "What is my 95 % one‑day Value‑at‑Risk?",
+    "How does my downside deviation compare with peers?",
+    "What was my worst drawdown since 2020?",
+    "Does my 65 / 25 / 10 split suit a \"Moderate\" risk profile?",
+    "If I lift tech exposure to 30 % of equities, what changes?",
+    "What's the impact of moving 5 % of assets into physical gold?",
+    "How would a 7‑year green bond sleeve affect my duration?",
+    "What extra fees come from a 3 % private‑equity allocation?",
+    "If I raise monthly deposits 10 % to HK$16,720, how soon do I hit my goal?",
+    "Is my 2 % dividend yield competitive?",
+    "Would a covered‑call strategy on Apple and Microsoft raise income meaningfully?",
+    "What are my turnover and tax‑drag figures?",
+    "Would swapping half my bonds into a municipal ladder help?",
+    "How much loss carry‑forward do I still have?",
+    "What does a 50 bp Fed rate cut mean for my bonds?",
+    "How sensitive am I to USD/HKD moves?",
+    "How did I perform versus the Hang Seng Index last year?",
+    "Is dollar‑cost averaging my HK$15,200 deposits still wise?",
+    "When do 3‑month T‑Bills beat my 4.6 % sweep yield?",
+    "Would allocating 3 % to green bonds boost my ESG score?"
+  ];
+
   const handleRandomStock = () => {
     const randomStock = stockSymbols[Math.floor(Math.random() * stockSymbols.length)];
     setSuggestedStock(randomStock);
+  };
+
+  const handleRandomQuestion = () => {
+    const randomQuestion = questionSuggestions[Math.floor(Math.random() * questionSuggestions.length)];
+    setInputValue(randomQuestion);
   };
 
   const handleStockClick = () => {
@@ -477,20 +518,24 @@ export const ChatInterface = () => {
               )}
             </div>
 
-            {/* Stock Suggestion Dice */}
+            {/* Stock/Question Suggestion Dice */}
             <div className="flex items-center justify-center gap-3 mb-4">
               <button
                 onClick={() => {
-                  handleRandomStock();
-                  setInputValue(`Research ${stockSymbols[Math.floor(Math.random() * stockSymbols.length)]}`);
+                  if (isAdvancedMode) {
+                    handleRandomQuestion();
+                  } else {
+                    handleRandomStock();
+                    setInputValue(`Research ${stockSymbols[Math.floor(Math.random() * stockSymbols.length)]}`);
+                  }
                 }}
                 className="flex items-center gap-2 p-3 rounded-lg bg-sky-500/10 border border-sky-500/30 hover:bg-sky-500/20 hover:border-sky-500/40 transition-all duration-200 cursor-pointer"
                 disabled={isLoading}
-                title="Get stock suggestions"
+                title={isAdvancedMode ? "Get question suggestions" : "Get stock suggestions"}
               >
                 <Dices className="w-4 h-4 text-sky-400" />
                 <span className="text-sm font-medium text-sky-400">
-                  Stock Suggestions
+                  {isAdvancedMode ? "Question Suggestions" : "Stock Suggestions"}
                 </span>
               </button>
             </div>
@@ -565,7 +610,7 @@ export const ChatInterface = () => {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                  placeholder="Research (stock)"
+                  placeholder={isAdvancedMode ? "Ask me anything about your portfolio..." : "Type your message..."}
                   className={`relative z-10 ${
                     isAdvancedMode 
                       ? `${themeClasses.bg} ${themeClasses.border} border` 

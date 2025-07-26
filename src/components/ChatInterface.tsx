@@ -40,7 +40,7 @@ export const ChatInterface = () => {
   const [normalMessages, setNormalMessages] = useState<Message[]>([
     {
       id: 'welcome',
-      content: 'Give me a stock name/symbol and I\'ll find you the latest research!',
+      content: 'Give me a NASDAQ stock and I\'ll find you the latest research',
       isUser: false,
       timestamp: new Date()
     }
@@ -610,7 +610,7 @@ export const ChatInterface = () => {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                  placeholder={isAdvancedMode ? "Ask me anything about your portfolio..." : "Type your message..."}
+                  placeholder={isAdvancedMode ? "Ask portfolio AI Agent..." : "Type your message..."}
                   className={`relative z-10 ${
                     isAdvancedMode 
                       ? `${themeClasses.bg} ${themeClasses.border} border` 

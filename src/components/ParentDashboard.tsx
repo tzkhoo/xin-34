@@ -1,7 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Shield, Eye, EyeOff, Users, TrendingUp, Lock } from 'lucide-react';
+import { Shield, Eye, EyeOff, Users, TrendingUp, Lock, ArrowRight, DollarSign, BarChart3, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useState } from 'react';
 
 export const ParentDashboard = () => {
@@ -10,6 +12,43 @@ export const ParentDashboard = () => {
     transactions: false,
     investments: true,
     performance: false
+  });
+
+  // Mock data for heirs
+  const [heirs] = useState([
+    {
+      id: 1,
+      name: "Alex Chen",
+      portfolioValue: 85000,
+      performance: "+8.4%",
+      lastTransfer: "2024-01-15",
+      transferAmount: 10000,
+      riskScore: "Conservative"
+    },
+    {
+      id: 2,
+      name: "Emma Chen", 
+      portfolioValue: 120000,
+      performance: "+12.1%",
+      lastTransfer: "2024-01-20",
+      transferAmount: 15000,
+      riskScore: "Moderate"
+    },
+    {
+      id: 3,
+      name: "David Chen",
+      portfolioValue: 67000,
+      performance: "+5.2%", 
+      lastTransfer: "2024-01-10",
+      transferAmount: 8000,
+      riskScore: "Aggressive"
+    }
+  ]);
+
+  const [transferData, setTransferData] = useState({
+    heirId: "",
+    amount: "",
+    frequency: "monthly"
   });
 
   return (
@@ -93,6 +132,109 @@ export const ParentDashboard = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Heir Investment Tracking */}
+      <Card className="border-parent/30 bg-parent/20 backdrop-blur-md">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-parent">
+            <BarChart3 className="w-5 h-5" />
+            Heir Investment Performance
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {heirs.map((heir) => (
+              <div key={heir.id} className="p-4 rounded-lg bg-white/40 border border-parent/30">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h4 className="font-semibold text-parent">{heir.name}</h4>
+                    <p className="text-sm text-muted-foreground">Risk Profile: {heir.riskScore}</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-lg font-bold text-parent">${heir.portfolioValue.toLocaleString()}</div>
+                    <div className={`text-sm ${heir.performance.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
+                      {heir.performance} YTD
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-between text-sm text-muted-foreground">
+                  <span>Last Transfer: ${heir.transferAmount.toLocaleString()}</span>
+                  <span>{heir.lastTransfer}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Interval Transfer Setup */}
+      <Card className="border-parent/30 bg-parent/20 backdrop-blur-md">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-parent">
+            <ArrowRight className="w-5 h-5" />
+            Schedule Inheritance Transfer
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Set up regular transfers based on heir performance. Keep wealth within the BOCHK platform.
+          </p>
+          
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-parent">Select Heir</label>
+              <Select value={transferData.heirId} onValueChange={(value) => setTransferData(prev => ({ ...prev, heirId: value }))}>
+                <SelectTrigger className="border-parent/40">
+                  <SelectValue placeholder="Choose heir" />
+                </SelectTrigger>
+                <SelectContent>
+                  {heirs.map((heir) => (
+                    <SelectItem key={heir.id} value={heir.id.toString()}>
+                      {heir.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-parent">Transfer Amount</label>
+              <Input
+                placeholder="Enter amount"
+                value={transferData.amount}
+                onChange={(e) => setTransferData(prev => ({ ...prev, amount: e.target.value }))}
+                className="border-parent/40"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-parent">Frequency</label>
+              <Select value={transferData.frequency} onValueChange={(value) => setTransferData(prev => ({ ...prev, frequency: value }))}>
+                <SelectTrigger className="border-parent/40">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="weekly">Weekly</SelectItem>
+                  <SelectItem value="monthly">Monthly</SelectItem>
+                  <SelectItem value="quarterly">Quarterly</SelectItem>
+                  <SelectItem value="annually">Annually</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="flex gap-2 pt-4">
+            <Button className="flex items-center gap-2 bg-parent hover:bg-parent/80">
+              <DollarSign className="w-4 h-4" />
+              Schedule Transfer
+            </Button>
+            <Button variant="outline" className="border-parent/40 text-parent hover:bg-parent/10">
+              <Calendar className="w-4 h-4 mr-2" />
+              View Transfer History
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Quick Actions */}
       <Card className="border-parent/30 bg-parent/20 backdrop-blur-md">

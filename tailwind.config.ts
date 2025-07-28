@@ -136,8 +136,7 @@ export default {
 				},
 				'gentle-bounce': {
 					'0%, 100%': { transform: 'translateY(0px)' },
-					'25%, 75%': { transform: 'translateY(-3px)' },
-					'50%': { transform: 'translateY(-6px)' }
+					'50%': { transform: 'translateY(-3px)' }
 				},
 				'particle-fall': {
 					'0%': { 
@@ -161,7 +160,7 @@ export default {
 				'premium-burn': 'premium-burn 10s ease-in-out infinite',
 				'particle-fall': 'particle-fall 2s linear infinite',
 				'gentle-float': 'gentle-float 3s ease-in-out infinite',
-				'gentle-bounce': 'gentle-bounce 2s ease-in-out infinite'
+				'gentle-bounce': 'gentle-bounce 6s ease-in-out infinite'
 			}
 		}
 	},

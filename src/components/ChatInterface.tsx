@@ -325,11 +325,34 @@ export const ChatInterface = () => {
     // Decode HTML entities to fix gibberish symbols
     const decodedContent = decodeHTMLEntities(content);
     
+    // Check for JSON URLs first (for image output from webhooks)
+    let processedContent = decodedContent;
+    try {
+      // Check if the content is a JSON URL (for image output)
+      if (content.trim().startsWith('http') && content.includes('.json')) {
+        const jsonUrl = content.trim();
+        // Display the JSON URL as a clickable link
+        return (
+          <div className="space-y-2">
+            <p>Generated image data:</p>
+            <a 
+              href={jsonUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 underline break-all"
+            >
+              {jsonUrl}
+            </a>
+          </div>
+        );
+      }
+    } catch (e) {
+      // Continue with normal processing if not a JSON URL
+    }
+    
     // Check for markdown image syntax: ![alt](url) or direct image URLs
     const markdownImageRegex = /!\[(.*?)\]\((.*?)\)/g;
     const urlImageRegex = /(https?:\/\/[^\s]+\.(?:png|jpg|jpeg|gif|webp|svg))/gi;
-    
-    let processedContent = decodedContent;
     const images: { element: JSX.Element; placeholder: string }[] = [];
     
     // Handle markdown images first

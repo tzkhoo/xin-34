@@ -263,7 +263,13 @@ export const ChatInterface = () => {
       
       // Handle different response formats from n8n with validation
       let responseContent = '';
-      if (aiResponseData.output) {
+      
+      // Check for n8n "Respond to Webhook" node format first
+      if (aiResponseData.data) {
+        responseContent = aiResponseData.data;
+      } else if (aiResponseData.body) {
+        responseContent = aiResponseData.body;
+      } else if (aiResponseData.output) {
         responseContent = aiResponseData.output;
       } else if (aiResponseData.response) {
         responseContent = aiResponseData.response;

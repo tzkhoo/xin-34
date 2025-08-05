@@ -547,70 +547,88 @@ export const ChatInterface = () => {
               ) : (
                 <>
                   {messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
-                    >
-                      <div className={`flex items-start gap-2 ${message.isUser ? 'flex-row-reverse' : 'flex-row'}`}>
-                         {/* Avatar - Always visible for better UX */}
-                         <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${themeClasses.primary}`}>
-                           {message.isUser ? (
-                             <User className={`w-4 h-4 ${themeClasses.foreground}`} />
+                     <div
+                       key={message.id}
+                       className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
+                     >
+                        <div className={`flex ${message.isUser ? 'flex-row-reverse' : 'flex-row'} w-full`}>
+                            {message.isUser ? (
+                              <div className={`flex items-start gap-2 flex-row-reverse`}>
+                                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${themeClasses.primary}`}>
+                                  <User className={`w-4 h-4 ${themeClasses.foreground}`} />
+                                </div>
+                                <div className="flex flex-col gap-1 w-full">
+                                  <div className="text-xs font-medium text-right">You</div>
+                                  <div
+                                    className={`
+                                      w-full max-w-[85vw] sm:max-w-xs lg:max-w-md px-3 sm:px-4 py-2 rounded-xl
+                                      ${isAdvancedMode 
+                                        ? `${themeClasses.primary} text-black ml-auto` 
+                                        : `${themeClasses.primary} ${themeClasses.foreground} ml-auto`
+                                      }
+                                    `}
+                                  >
+                                    {renderMessageContent(message.content)}
+                                  </div>
+                                </div>
+                              </div>
                             ) : (
-                              <Bot className={`w-4 h-4 ${themeClasses.foreground} ${isAdvancedMode ? 'text-golden animate-pulse' : ''}`} />
+                              <div className="flex flex-col w-full">
+                                {/* Header row with icon and "Xin AI" on same level */}
+                                <div className="flex items-center gap-2 mb-1">
+                                  <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${themeClasses.primary}`}>
+                                    <Bot className={`w-4 h-4 ${themeClasses.foreground} ${isAdvancedMode ? 'text-golden animate-pulse' : ''}`} />
+                                  </div>
+                                  <div className="text-xs font-medium">
+                                    <span className="animate-float-gentle">Xin AI</span>
+                                  </div>
+                                </div>
+                                {/* Answer text box - lowered and taking more width */}
+                                <div className="ml-10">
+                                  <div
+                                    className={`
+                                      w-full max-w-[90vw] sm:max-w-lg lg:max-w-2xl px-3 sm:px-4 py-2 rounded-xl
+                                      ${isAdvancedMode
+                                        ? `${themeClasses.bg} ${themeClasses.border} backdrop-blur-md border`
+                                        : 'glass-panel'
+                                      }
+                                    `}
+                                  >
+                                    {renderMessageContent(message.content)}
+                                  </div>
+                                </div>
+                              </div>
                             )}
-                         </div>
-                         
-                         {/* Message content */}
-                         <div className="flex flex-col gap-1 w-full">
-                            <div className={`text-xs font-medium ${message.isUser ? 'text-right' : 'text-left'}`}>
-                               {message.isUser ? 'You' : <span className="animate-float-gentle">Xin AI</span>}
-                             </div>
-                          <div
-                            className={`
-                              w-full max-w-[85vw] sm:max-w-xs lg:max-w-md px-3 sm:px-4 py-2 rounded-xl
-                               ${message.isUser 
-                                 ? isAdvancedMode 
-                                   ? `${themeClasses.primary} text-black ml-auto` 
-                                   : `${themeClasses.primary} ${themeClasses.foreground} ml-auto`
-                                : isAdvancedMode
-                                  ? `${themeClasses.bg} ${themeClasses.border} backdrop-blur-md border`
-                                  : 'glass-panel'
-                              }
-                            `}
-                          >
-                            {renderMessageContent(message.content)}
-                          </div>
                         </div>
-                      </div>
-                    </div>
+                     </div>
                   ))}
-                  {isLoading && (
-                    <div className="flex justify-start">
-                      <div className="flex items-start gap-2 flex-row w-full">
-                         {/* Avatar - Always visible for consistency */}
-                         <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${themeClasses.primary}`}>
-                           <Bot className={`w-4 h-4 ${themeClasses.foreground}`} />
+                   {isLoading && (
+                     <div className="flex justify-start">
+                       <div className="flex flex-col w-full">
+                         {/* Header row with icon and "Xin AI" on same level */}
+                         <div className="flex items-center gap-2 mb-1">
+                           <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${themeClasses.primary}`}>
+                             <Bot className={`w-4 h-4 ${themeClasses.foreground}`} />
+                           </div>
+                           <div className="text-xs font-medium">
+                             <span className="animate-float-gentle">Xin AI</span>
+                           </div>
                          </div>
-                         
-                         {/* Message content */}
-                         <div className="flex flex-col gap-1 w-full">
-                            <div className="text-xs font-medium text-left">
-                               <span className="animate-float-gentle">Xin AI</span>
+                         {/* Loading text box - lowered and taking more width */}
+                         <div className="ml-10">
+                           <div className={`w-full max-w-[90vw] sm:max-w-lg lg:max-w-2xl ${isAdvancedMode 
+                             ? `${themeClasses.bg} ${themeClasses.border} backdrop-blur-md px-3 sm:px-4 py-2 rounded-xl border`
+                             : 'glass-panel px-3 sm:px-4 py-2 rounded-xl'
+                           }`}>
+                             <div className="flex items-center space-x-2">
+                               <div className={`animate-spin rounded-full h-4 w-4 border-b-2 ${themeClasses.text.replace('text-', 'border-')}`}></div>
+                               <span>AI is thinking...</span>
                              </div>
-                          <div className={`w-full max-w-[85vw] sm:max-w-xs lg:max-w-md ${isAdvancedMode 
-                            ? `${themeClasses.bg} ${themeClasses.border} backdrop-blur-md px-3 sm:px-4 py-2 rounded-xl border`
-                            : 'glass-panel px-3 sm:px-4 py-2 rounded-xl'
-                          }`}>
-                            <div className="flex items-center space-x-2">
-                              <div className={`animate-spin rounded-full h-4 w-4 border-b-2 ${themeClasses.text.replace('text-', 'border-')}`}></div>
-                              <span>AI is thinking...</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   )}
                 </>
               )}
             </div>
